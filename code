@@ -1,0 +1,48 @@
+CREATE TABLE hospitals (
+  hospital_id INT AUTO_INCREMENT PRIMARY KEY,
+  reg_no VARCHAR(50) UNIQUE NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  address TEXT,
+  phone VARCHAR(50)
+);
+
+CREATE TABLE doctors (
+  doctor_id INT AUTO_INCREMENT PRIMARY KEY,
+  hospital_id INT NOT NULL,
+  emp_code VARCHAR(50) UNIQUE,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100),
+  dob DATE,
+  job_title VARCHAR(100),
+  FOREIGN KEY (hospital_id) REFERENCES hospitals(hospital_id) ON DELETE CASCADE
+);
+
+CREATE TABLE patients (
+  patient_id INT AUTO_INCREMENT PRIMARY KEY,
+  mr_no VARCHAR(50) UNIQUE NOT NULL,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100),
+  dob DATE,
+  permanent_address TEXT,
+  current_address TEXT,
+  phone VARCHAR(50)
+);
+
+CREATE TABLE attendants (
+  attendant_id INT AUTO_INCREMENT PRIMARY KEY,
+  patient_id INT NOT NULL,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100),
+  relation VARCHAR(100),
+  FOREIGN KEY (patient_id) REFERENCES patients(patient_id) ON DELETE CASCADE
+);
+
+CREATE TABLE treatments (
+  treatment_id INT AUTO_INCREMENT PRIMARY KEY,
+  doctor_id INT NOT NULL,
+  patient_id INT NOT NULL,
+  treatment_date DATE DEFAULT CURRENT_DATE,
+  notes TEXT,
+  FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id) ON DELETE CASCADE,
+  FOREIGN KEY (patient_id) REFERENCES patients(patient_id) ON DELETE CASCADE
+);
